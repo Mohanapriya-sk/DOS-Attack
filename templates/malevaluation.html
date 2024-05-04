@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Malware Detection</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style2.css') }}" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet" />
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+</style>
+</head>
+
+<body>
+     <!-- Navbar Start -->
+    <div class="container-fluid position-relative nav-bar p-0">
+        <div class="position-relative px-lg-5" style="z-index: 9;">
+            <nav class="navbar navbar-expand-lg bg-secondary navbar-dark py-3 py-lg-0 pl-3 pl-lg-5">
+                <a href="" class="navbar-brand">
+                   <h1 class="text-uppercase text-primary mb-1">Malware Detection</h1>
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto py-0">
+                         <a href="{{ url_for('dashboard') }}" class="nav-item nav-link">Dashboard</a>
+                        <div class="nav-item dropdown">
+                                   
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Preprocessing</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a href="{{ url_for('malware') }}" class="dropdown-item">Raw Data</a>
+                                <a href="{{ url_for('processmal') }}" class="dropdown-item">Processed Data</a>
+                                <a href="{{ url_for('legimal') }}" class="dropdown-item">Statistics  </a>
+                                
+                            </div>
+                        </div>
+                    <a href="{{ url_for('malevaluation') }}" class="nav-item nav-link active">Training & Evaluation</a>
+                        <a href="{{ url_for('malcomparision') }}" class="nav-item nav-link">Comparision</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+
+ <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+           
+            <h1 class="display-4 text-uppercase text-center mb-5"><span class="text-primary">Splitting</span> The Data</h1>
+           
+            <div class="row mt-3">
+                <div class="col-lg-6 mb-2">
+                    <div class="d-flex align-items-center bg-light p-4 mb-4" style="height: 150px;">
+                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary ml-n4 mr-4" style="width: 100px; height: 100px;">
+                            <i class="fa fa-database text-secondary"></i>
+                        </div>
+                        <h4 class="text-uppercase m-0">The train dataset size {{ x_train }}</h4>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-2">
+                    <div class="d-flex align-items-center bg-secondary p-4 mb-4" style="height: 150px;">
+                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary ml-n4 mr-4" style="width: 100px; height: 100px;">
+                            <i class="fa fa-database text-secondary"></i>
+                        </div>
+                        <h4 class="text-light text-uppercase m-0">The test dataset size {{ y_train }}</h4>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+    <!-- About Start -->
+    <div class="container-fluid">
+        <div class="container pb-1">
+           
+            <h1 class="display-4 text-uppercase text-center"><span class="text-primary">Training</span> The Data</h1>
+           
+        </div>
+    </div>
+    <!-- About End -->
+<!-- ---------------------------------------------------------------------------------- -->
+<div id="tabs-group-0" class="tab-group tab-group--0" style="padding:0px;">
+ 
+  <div class="js-tabs" data-existing-hx="h3" data-tabs-prefix-class="hb">
+    <ul class="js-tablist">
+      <li class="js-tablist__item"><a class="js-tablist__link" href="#aliquam-0">Random Forest</a></li>
+      <li class="js-tablist__item"><a class="js-tablist__link" href="#debitis-0">Logistic Regression</a></li>
+      <li class="js-tablist__item"><a class="js-tablist__link" href="#soluta-0">Neural Network</a></li>
+     
+    </ul>
+    <div class="js-tabcontent" id="aliquam-0">
+      <h3 style="text-align: center;">Random Forest Metrics</h3>
+      
+  
+       <!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+            
+           
+            <div class="row">
+                <div class="col-lg-7 mb-2">
+                    <div class="contact-form bg-light mb-4" style="padding: 30px;">
+                   <img src="{{ random_img }}" style="width: 550px;height: 400px;"  alt="confusion matrix">
+                    </div>
+                </div>
+                <div class="col-lg-5 mb-2">
+                    <div class="bg-secondary d-flex flex-column justify-content-center px-5 mb-4" style="height: 435px;">
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Accuracy</h5>
+                                <p>{{rf_accuracy}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">F1 Score</h5>
+                                <p>{{rf_f1}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Precision</h5>
+                                <p>{{rf_precision}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Recall</h5>
+                                <p class="m-0">{{rf_recall}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+    </div>
+    <div class="js-tabcontent" id="debitis-0">
+         <h3>Logistic Regression Metrics</h3>
+      
+  
+       <!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+            
+           
+            <div class="row">
+                <div class="col-lg-7 mb-2">
+                    <div class="contact-form bg-light mb-4" style="padding: 30px;">
+                   <img src="{{ logistic_img }}" style="width: 550px;height: 400px;"  alt="confusion matrix">
+                    </div>
+                </div>
+                <div class="col-lg-5 mb-2">
+                    <div class="bg-secondary d-flex flex-column justify-content-center px-5 mb-4" style="height: 435px;">
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Accuracy</h5>
+                                <p>{{lr_accuracy}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">F1 Score</h5>
+                                <p>{{lr_f1}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Precision</h5>
+                                <p>{{lr_precision}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Recall</h5>
+                                <p class="m-0">{{lr_recall}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="js-tabcontent" id="soluta-0">
+       <h3 style="text-align: center;">Neural Network Metrics</h3>
+      
+  
+       <!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container pt-5 pb-3">
+            
+           
+            <div class="row">
+                <div class="col-lg-7 mb-2">
+                    <div class="contact-form bg-light mb-4" style="padding: 30px;">
+                   <img src="{{ neural_img }}" style="width: 550px;height: 400px;"  alt="confusion matrix">
+                    </div>
+                </div>
+                <div class="col-lg-5 mb-2">
+                    <div class="bg-secondary d-flex flex-column justify-content-center px-5 mb-4" style="height: 435px;">
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Accuracy</h5>
+                                <p>{{nn_accuracy}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">F1 Score</h5>
+                                <p>{{nn_f1}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Precision</h5>
+                                <p>{{nn_precision}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <i class="fa fa-2x fa-cloud text-primary flex-shrink-0 mr-3"></i>
+                            <div class="mt-n1">
+                                <h5 class="text-light">Recall</h5>
+                                <p class="m-0">{{nn_recall}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+   
+
+  </div>
+
+</div>
+ <!-- --------------------------------------------------------------------------------- -->
+    <!-- Navbar End -->
+</body>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+<script>
+    /*
+ * ES2015 accessible tabs panel system, using ARIA
+ * Website: https://van11y.net/accessible-tab-panel/
+ * License MIT: https://github.com/nico3333fr/van11y-accessible-tab-panel-aria/blob/master/LICENSE
+ */
+"use strict";
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+
+(function (doc) {
+  "use strict";
+
+  var TABS_JS = "js-tabs";
+  var TABS_JS_LIST = "js-tablist";
+  var TABS_JS_LISTITEM = "js-tablist__item";
+  var TABS_JS_LISTLINK = "js-tablist__link";
+  var TABS_JS_CONTENT = "js-tabcontent";
+  var TABS_JS_LINK_TO_TAB = "js-link-to-tab";
+
+  var TABS_DATA_PREFIX_CLASS = "data-tabs-prefix-class";
+  var TABS_DATA_HX = "data-hx";
+  var TABS_DATA_GENERATED_HX_CLASS = "data-tabs-generated-hx-class";
+  var TABS_DATA_EXISTING_HX = "data-existing-hx";
+
+  var TABS_DATA_SELECTED_TAB = "data-selected";
+
+  var TABS_PREFIX_IDS = "label_";
+
+  var TABS_STYLE = "tabs";
+  var TABS_LIST_STYLE = "tabs__nav";
+  var TABS_LISTITEM_STYLE = "tabs__nav-list-item";
+  var TABS_LINK_STYLE = "tabs__nav-list-link";
+  var TABS_CONTENT_STYLE = "tabs__panel";
+
+  var TABS_HX_DEFAULT_CLASS = "hide";
+
+  var TABS_ROLE_TABLIST = "tablist";
+  var TABS_ROLE_TAB = "tab";
+  var TABS_ROLE_TABPANEL = "tabpanel";
+  var TABS_ROLE_PRESENTATION = "presentation";
+
+  var ATTR_ROLE = "role";
+  var ATTR_LABELLEDBY = "aria-labelledby";
+  var ATTR_HIDDEN = "aria-hidden";
+  var ATTR_CONTROLS = "aria-controls";
+  var ATTR_SELECTED = "aria-selected";
+
+  var DELAY_HASH_UPDATE = 1000;
+
+  var hash = window.location.hash.replace("#", "");
+
+  const IS_OPENED_CLASS = "is-active";
+
+  var findById = function findById(id) {
+    return doc.getElementById(id);
+  };
+
+  var addClass = function addClass(el, className) {
+    if (el.classList) {
+      el.classList.add(className); // IE 10+
+    } else {
+      el.className += " " + className; // IE 8+
+    }
+  };
+
+  /*const removeClass = (el, className) => {
+           if (el.classList) {
+             el.classList.remove(className); // IE 10+
+           }
+           else {
+                el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' '); // IE 8+
+                }
+           }*/
+
+  var hasClass = function hasClass(el, className) {
+    if (el.classList) {
+      return el.classList.contains(className); // IE 10+
+    } else {
+      return new RegExp("(^| )" + className + "( |$)", "gi").test(el.className); // IE 8+ ?
+    }
+  };
+
+  var setAttributes = function setAttributes(node, attrs) {
+    Object.keys(attrs).forEach(function (attribute) {
+      node.setAttribute(attribute, attrs[attribute]);
+    });
+  };
+  var unSelectLinks = function unSelectLinks(elts) {
+    elts.forEach(function (link_node) {
+      var _setAttributes;
+
+      setAttributes(
+        link_node,
+        ((_setAttributes = {}),
+        _defineProperty(_setAttributes, ATTR_SELECTED, "false"),
+        _defineProperty(_setAttributes, "tabindex", "-1"),
+        _setAttributes)
+      );
+    });
+  };
+  var unSelectContents = function unSelectContents(elts) {
+    elts.forEach(function (content_node) {
+      content_node.setAttribute(ATTR_HIDDEN, true);
+    });
+  };
+
+  var selectLink = function selectLink(el) {
+    var _setAttributes2;
+
+    var destination = findById(el.getAttribute(ATTR_CONTROLS));
+    setAttributes(
+      el,
+      ((_setAttributes2 = {}),
+      _defineProperty(_setAttributes2, ATTR_SELECTED, "true"),
+      _defineProperty(_setAttributes2, "tabindex", "0"),
+      _setAttributes2)
+    );
+    destination.removeAttribute(ATTR_HIDDEN);
+    setTimeout(function () {
+      el.focus();
+    }, 0);
+    setTimeout(function () {
+      history.pushState(
+        null,
+        null,
+        location.pathname +
+          location.search +
+          "#" +
+          el.getAttribute(ATTR_CONTROLS)
+      );
+    }, DELAY_HASH_UPDATE);
+  };
+
+  var selectLinkInList = function selectLinkInList(
+    itemsList,
+    linkList,
+    contentList,
+    param
+  ) {
+    var indice_trouve = undefined;
+
+    itemsList.forEach(function (itemNode, index) {
+      if (
+        itemNode
+          .querySelector("." + TABS_JS_LISTLINK)
+          .getAttribute(ATTR_SELECTED) === "true"
+      ) {
+        indice_trouve = index;
+      }
+    });
+    unSelectLinks(linkList);
+    unSelectContents(contentList);
+    if (param === "next") {
+      selectLink(linkList[indice_trouve + 1]);
+      setTimeout(function () {
+        linkList[indice_trouve + 1].focus();
+      }, 0);
+    }
+    if (param === "prev") {
+      selectLink(linkList[indice_trouve - 1]);
+      setTimeout(function () {
+        linkList[indice_trouve - 1].focus();
+      }, 0);
+    }
+  };
+
+  /* gets an element el, search if it is child of parent class, returns id of the parent */
+  var searchParent = function searchParent(el, parentClass) {
+    var found = false;
+    var parentElement = el.parentNode;
+    while (parentElement && found === false) {
+      if (hasClass(parentElement, parentClass) === true) {
+        found = true;
+      } else {
+        parentElement = parentElement.parentNode;
+      }
+    }
+    if (found === true) {
+      return parentElement.getAttribute("id");
+    } else {
+      return "";
+    }
+  };
+
+  /** Find all tabs inside a container
+   * @param  {Node} node Default document
+   * @return {Array}
+   */
+  var $listTabs = function $listTabs() {
+    var node =
+      arguments.length <= 0 || arguments[0] === undefined ? doc : arguments[0];
+    return [].slice.call(node.querySelectorAll("." + TABS_JS));
+  };
+
+  /**
+   * Build tooltips for a container
+   * @param  {Node} node
+   */
+  var attach = function attach(node) {
+    $listTabs(node).forEach(function (tabs_node) {
+      var iLisible = Math.random().toString(32).slice(2, 12);
+      var prefixClassName =
+        tabs_node.hasAttribute(TABS_DATA_PREFIX_CLASS) === true
+          ? tabs_node.getAttribute(TABS_DATA_PREFIX_CLASS) + "-"
+          : "";
+      var hx =
+        tabs_node.hasAttribute(TABS_DATA_HX) === true
+          ? tabs_node.getAttribute(TABS_DATA_HX)
+          : "";
+      var hxGeneratedClass =
+        tabs_node.hasAttribute(TABS_DATA_GENERATED_HX_CLASS) === true
+          ? tabs_node.getAttribute(TABS_DATA_GENERATED_HX_CLASS)
+          : TABS_HX_DEFAULT_CLASS;
+      var existingHx =
+        tabs_node.hasAttribute(TABS_DATA_EXISTING_HX) === true
+          ? tabs_node.getAttribute(TABS_DATA_EXISTING_HX)
+          : "";
+      var $tabList = [].slice.call(
+        tabs_node.querySelectorAll("." + TABS_JS_LIST)
+      );
+      var $tabListItems = [].slice.call(
+        tabs_node.querySelectorAll("." + TABS_JS_LISTITEM)
+      );
+      var $tabListLinks = [].slice.call(
+        tabs_node.querySelectorAll("." + TABS_JS_LISTLINK)
+      );
+      var $tabListPanels = [].slice.call(
+        tabs_node.querySelectorAll("." + TABS_JS_CONTENT)
+      );
+      var noTabSelected = true;
+
+      // container
+      addClass(tabs_node, prefixClassName + TABS_STYLE);
+      tabs_node.setAttribute("id", TABS_STYLE + iLisible);
+
+      // ul
+      $tabList.forEach(function (tabList) {
+        var _setAttributes3;
+
+        addClass(tabList, prefixClassName + TABS_LIST_STYLE);
+        setAttributes(
+          tabList,
+          ((_setAttributes3 = {}),
+          _defineProperty(_setAttributes3, ATTR_ROLE, TABS_ROLE_TABLIST),
+          _defineProperty(_setAttributes3, "id", TABS_LIST_STYLE + iLisible),
+          _setAttributes3)
+        );
+      });
+      // li
+      $tabListItems.forEach(function (tabListItem, index) {
+        var _setAttributes4;
+
+        addClass(tabListItem, prefixClassName + TABS_LISTITEM_STYLE);
+        setAttributes(
+          tabListItem,
+          ((_setAttributes4 = {}),
+          _defineProperty(_setAttributes4, ATTR_ROLE, TABS_ROLE_PRESENTATION),
+          _defineProperty(
+            _setAttributes4,
+            "id",
+            TABS_LISTITEM_STYLE + iLisible + "-" + (index + 1)
+          ),
+          _setAttributes4)
+        );
+      });
+      // a
+      $tabListLinks.forEach(function (tabListLink) {
+        var _setAttributes5, _setAttributes6;
+
+        var idHref = tabListLink.getAttribute("href").replace("#", "");
+        var panelControlled = findById(idHref);
+        var linkText = tabListLink.innerText;
+        var panelSelected =
+          tabListLink.hasAttribute(TABS_DATA_SELECTED_TAB) === true;
+
+        addClass(tabListLink, prefixClassName + TABS_LINK_STYLE);
+        setAttributes(
+          tabListLink,
+          ((_setAttributes5 = {
+            id: TABS_PREFIX_IDS + idHref
+          }),
+          _defineProperty(_setAttributes5, ATTR_ROLE, TABS_ROLE_TAB),
+          _defineProperty(_setAttributes5, ATTR_CONTROLS, idHref),
+          _defineProperty(_setAttributes5, "tabindex", "-1"),
+          _defineProperty(_setAttributes5, ATTR_SELECTED, "false"),
+          _setAttributes5)
+        );
+
+        // panel controlled
+        setAttributes(
+          panelControlled,
+          ((_setAttributes6 = {}),
+          _defineProperty(_setAttributes6, ATTR_HIDDEN, "true"),
+          _defineProperty(_setAttributes6, ATTR_ROLE, TABS_ROLE_TABPANEL),
+          _defineProperty(
+            _setAttributes6,
+            ATTR_LABELLEDBY,
+            TABS_PREFIX_IDS + idHref
+          ),
+          _setAttributes6)
+        );
+        addClass(panelControlled, prefixClassName + TABS_CONTENT_STYLE);
+
+        // if already selected
+        if (panelSelected && noTabSelected) {
+          noTabSelected = false;
+          setAttributes(
+            tabListLink,
+            _defineProperty(
+              {
+                tabindex: "0"
+              },
+              ATTR_SELECTED,
+              "true"
+            )
+          );
+          setAttributes(
+            panelControlled,
+            _defineProperty({}, ATTR_HIDDEN, "false")
+          );
+        }
+
+        // hx
+        if (hx !== "") {
+          var hx_node = document.createElement(hx);
+          hx_node.setAttribute("class", hxGeneratedClass);
+          hx_node.setAttribute("tabindex", "0");
+          hx_node.innerHTML = linkText;
+          panelControlled.insertBefore(hx_node, panelControlled.firstChild);
+        }
+        // existingHx
+
+        if (existingHx !== "") {
+          var $hx_existing = [].slice.call(
+            panelControlled.querySelectorAll(existingHx + ":first-child")
+          );
+          $hx_existing.forEach(function (hx_item) {
+            hx_item.setAttribute("tabindex", "0");
+          });
+        }
+
+        tabListLink.removeAttribute("href");
+      });
+
+      if (hash !== "") {
+        var nodeHashed = findById(hash);
+        if (nodeHashed !== null) {
+          // just in case of an dumb error
+          // search if hash is current tabs_node
+          if (tabs_node.querySelector("#" + hash) !== null) {
+            // search if hash is ON tabs
+            if (hasClass(nodeHashed, TABS_JS_CONTENT) === true) {
+              // unselect others
+              unSelectLinks($tabListLinks);
+              unSelectContents($tabListPanels);
+              // select this one
+              nodeHashed.removeAttribute(ATTR_HIDDEN);
+              var linkHashed = findById(TABS_PREFIX_IDS + hash);
+              setAttributes(
+                linkHashed,
+                _defineProperty(
+                  {
+                    tabindex: "0"
+                  },
+                  ATTR_SELECTED,
+                  "true"
+                )
+              );
+              noTabSelected = false;
+            } else {
+              // search if hash is IN tabs
+              var panelParentId = searchParent(nodeHashed, TABS_JS_CONTENT);
+              if (panelParentId !== "") {
+                // unselect others
+                unSelectLinks($tabListLinks);
+                unSelectContents($tabListPanels);
+                // select this one
+                var panelParent = findById(panelParentId);
+                panelParent.removeAttribute(ATTR_HIDDEN);
+                var linkParent = findById(TABS_PREFIX_IDS + panelParentId);
+                setAttributes(
+                  linkParent,
+                  _defineProperty(
+                    {
+                      tabindex: "0"
+                    },
+                    ATTR_SELECTED,
+                    "true"
+                  )
+                );
+                noTabSelected = false;
+              }
+            }
+          }
+        }
+      }
+
+      // if no selected => select first
+      if (noTabSelected === true) {
+        setAttributes(
+          $tabListLinks[0],
+          _defineProperty(
+            {
+              tabindex: "0"
+            },
+            ATTR_SELECTED,
+            "true"
+          )
+        );
+        var panelFirst = findById($tabListLinks[0].getAttribute(ATTR_CONTROLS));
+        panelFirst.removeAttribute(ATTR_HIDDEN);
+      }
+    });
+  };
+
+  /* listeners */
+  ["click", "keydown"].forEach(function (eventName) {
+    //let isCtrl = false;
+
+    doc.body.addEventListener(
+      eventName,
+      function (e) {
+        // click on a tab link or on something IN a tab link
+        var parentLink = searchParent(e.target, TABS_JS_LISTLINK);
+        if (
+          (hasClass(e.target, TABS_JS_LISTLINK) === true ||
+            parentLink !== "") &&
+          eventName === "click"
+        ) {
+          var linkSelected =
+            hasClass(e.target, TABS_JS_LISTLINK) === true
+              ? e.target
+              : findById(parentLink);
+          var parentTabId = searchParent(e.target, TABS_JS);
+          var parentTab = findById(parentTabId);
+          //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+          var $parentListLinks = [].slice.call(
+            parentTab.querySelectorAll("." + TABS_JS_LISTLINK)
+          );
+          var $parentListContents = [].slice.call(
+            parentTab.querySelectorAll("." + TABS_JS_CONTENT)
+          );
+
+          // aria selected false on all links
+          unSelectLinks($parentListLinks);
+          // add aria-hidden on all tabs contents
+          unSelectContents($parentListContents);
+          // add aria selected on selected link + show linked panel
+          selectLink(linkSelected);
+
+          e.preventDefault();
+        }
+
+        // Key down on tabs
+        if (
+          (hasClass(e.target, TABS_JS_LISTLINK) === true ||
+            parentLink !== "") &&
+          eventName === "keydown"
+        ) {
+          //let linkSelected = hasClass( e.target, TABS_JS_LISTLINK) === true ? e.target : findById( parentLink );
+          var parentTabId = searchParent(e.target, TABS_JS);
+          var parentTab = findById(parentTabId);
+          var $parentListItems = [].slice.call(
+            parentTab.querySelectorAll("." + TABS_JS_LISTITEM)
+          );
+          var $parentListLinks = [].slice.call(
+            parentTab.querySelectorAll("." + TABS_JS_LISTLINK)
+          );
+          var $parentListContents = [].slice.call(
+            parentTab.querySelectorAll("." + TABS_JS_CONTENT)
+          );
+          var firstLink = $parentListItems[0].querySelector(
+            "." + TABS_JS_LISTLINK
+          );
+          var lastLink = $parentListItems[
+            $parentListItems.length - 1
+          ].querySelector("." + TABS_JS_LISTLINK);
+
+          // strike home on a tab => 1st tab
+          if (e.keyCode === 36) {
+            unSelectLinks($parentListLinks);
+            unSelectContents($parentListContents);
+            selectLink(firstLink);
+
+            e.preventDefault();
+          }
+          // strike end on a tab => last tab
+          else if (e.keyCode === 35) {
+            unSelectLinks($parentListLinks);
+            unSelectContents($parentListContents);
+            selectLink(lastLink);
+
+            e.preventDefault();
+          }
+          // strike up or left on the tab => previous tab
+          else if ((e.keyCode === 37 || e.keyCode === 38) && !e.ctrlKey) {
+            if (firstLink.getAttribute(ATTR_SELECTED) === "true") {
+              unSelectLinks($parentListLinks);
+              unSelectContents($parentListContents);
+              selectLink(lastLink);
+
+              e.preventDefault();
+            } else {
+              selectLinkInList(
+                $parentListItems,
+                $parentListLinks,
+                $parentListContents,
+                "prev"
+              );
+              e.preventDefault();
+            }
+          }
+          // strike down or right in the tab => next tab
+          else if ((e.keyCode === 40 || e.keyCode === 39) && !e.ctrlKey) {
+            if (lastLink.getAttribute(ATTR_SELECTED) === "true") {
+              unSelectLinks($parentListLinks);
+              unSelectContents($parentListContents);
+              selectLink(firstLink);
+
+              e.preventDefault();
+            } else {
+              selectLinkInList(
+                $parentListItems,
+                $parentListLinks,
+                $parentListContents,
+                "next"
+              );
+              e.preventDefault();
+            }
+          }
+        }
+
+        // Key down in tab panels
+        var parentTabPanelId = searchParent(e.target, TABS_JS_CONTENT);
+        if (parentTabPanelId !== "" && eventName === "keydown") {
+          (function () {
+            var linkSelected = findById(
+              findById(parentTabPanelId).getAttribute(ATTR_LABELLEDBY)
+            );
+            var parentTabId = searchParent(e.target, TABS_JS);
+            var parentTab = findById(parentTabId);
+            var $parentListItems = [].slice.call(
+              parentTab.querySelectorAll("." + TABS_JS_LISTITEM)
+            );
+            var $parentListLinks = [].slice.call(
+              parentTab.querySelectorAll("." + TABS_JS_LISTLINK)
+            );
+            var $parentListContents = [].slice.call(
+              parentTab.querySelectorAll("." + TABS_JS_CONTENT)
+            );
+            var firstLink = $parentListItems[0].querySelector(
+              "." + TABS_JS_LISTLINK
+            );
+            var lastLink = $parentListItems[
+              $parentListItems.length - 1
+            ].querySelector("." + TABS_JS_LISTLINK);
+
+            // strike up + ctrl => go to header
+            if (e.keyCode === 38 && e.ctrlKey) {
+              setTimeout(function () {
+                linkSelected.focus();
+              }, 0);
+              e.preventDefault();
+            }
+            // strike pageup + ctrl => go to prev header
+            if (e.keyCode === 33 && e.ctrlKey) {
+              // go to header
+              linkSelected.focus();
+              e.preventDefault();
+              // then previous
+              if (firstLink.getAttribute(ATTR_SELECTED) === "true") {
+                unSelectLinks($parentListLinks);
+                unSelectContents($parentListContents);
+                selectLink(lastLink);
+              } else {
+                selectLinkInList(
+                  $parentListItems,
+                  $parentListLinks,
+                  $parentListContents,
+                  "prev"
+                );
+              }
+            }
+            // strike pagedown + ctrl => go to next header
+            if (e.keyCode === 34 && e.ctrlKey) {
+              // go to header
+              linkSelected.focus();
+              e.preventDefault();
+              // then next
+              if (lastLink.getAttribute(ATTR_SELECTED) === "true") {
+                unSelectLinks($parentListLinks);
+                unSelectContents($parentListContents);
+                selectLink(firstLink);
+              } else {
+                selectLinkInList(
+                  $parentListItems,
+                  $parentListLinks,
+                  $parentListContents,
+                  "next"
+                );
+              }
+            }
+          })();
+        }
+
+        // click on a tab link
+        var parentLinkToPanelId = searchParent(e.target, TABS_JS_LINK_TO_TAB);
+        if (
+          (hasClass(e.target, TABS_JS_LINK_TO_TAB) === true ||
+            parentLinkToPanelId !== "") &&
+          eventName === "click"
+        ) {
+          var panelSelectedId =
+            hasClass(e.target, TABS_JS_LINK_TO_TAB) === true
+              ? e.target.getAttribute("href").replace("#", "")
+              : findById(parentLinkToPanelId).replace("#", "");
+          var panelSelected = findById(panelSelectedId);
+          var buttonPanelSelected = findById(
+            panelSelected.getAttribute(ATTR_LABELLEDBY)
+          );
+          var parentTabId = searchParent(e.target, TABS_JS);
+          var parentTab = findById(parentTabId);
+          //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+          var $parentListLinks = [].slice.call(
+            parentTab.querySelectorAll("." + TABS_JS_LISTLINK)
+          );
+          var $parentListContents = [].slice.call(
+            parentTab.querySelectorAll("." + TABS_JS_CONTENT)
+          );
+
+          unSelectLinks($parentListLinks);
+          unSelectContents($parentListContents);
+          selectLink(buttonPanelSelected);
+
+          e.preventDefault();
+        }
+      },
+      true
+    );
+  });
+
+  var onLoad = function onLoad() {
+    attach();
+    document.removeEventListener("DOMContentLoaded", onLoad);
+  };
+
+  document.addEventListener("DOMContentLoaded", onLoad);
+
+  window.van11yAccessibleTabPanelAria = attach;
+})(document);
+
+</script>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/moment-timezone.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

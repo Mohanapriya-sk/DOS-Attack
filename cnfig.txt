@@ -1,0 +1,12 @@
+
+
+
+pip install Flask
+pip install pandas numpy
+pip install matplotlib seaborn
+pip install scikit-learn
+
+python -m venv venv
+mkdir mdos_attack
+.\venv\Scripts\activate
+python app.py
